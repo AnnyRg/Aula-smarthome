@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartHome Academia — Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="shell">
+
+  <!-- ════════════════════════════════════════════
+       PANEL IZQUIERDO — BRANDING
+  ════════════════════════════════════════════ -->
+  <div class="brand-panel">
+    <div class="brand-grid"></div>
+
+    <div class="brand-top">
+      <div class="brand-logo">
+        <div class="logo-gem">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="logo-wordmark">Smart<span>Home</span> Academia</div>
+      </div>
+
+      <div class="brand-headline">
+        Domina el CRM.<br><em>Certifícate.</em><br>Crece.
+      </div>
+
+      <p class="brand-sub">
+        Plataforma oficial de capacitación para equipos del sector
+        constructor e inmobiliario. Rutas estructuradas, evaluaciones
+        automáticas y certificación digital.
+      </p>
+
+      <div class="area-pills" id="area-pills">
+        <div class="pill active-area">Comercial</div>
+        <div class="pill">Marketing</div>
+        <div class="pill">Cartera</div>
+        <div class="pill">Trámites</div>
+        <div class="pill">Postventas</div>
+        <div class="pill">Gerencial</div>
+      </div>
+    </div><!-- /brand-top -->
+
+    <div class="brand-bottom">
+      <div class="brand-stats">
+        <div>
+          <div class="stat-val">6</div>
+          <div class="stat-lbl">Rutas de área</div>
+        </div>
+        <div>
+          <div class="stat-val">42</div>
+          <div class="stat-lbl">Módulos totales</div>
+        </div>
+        <div>
+          <div class="stat-val">100%</div>
+          <div class="stat-lbl">Online</div>
+        </div>
+      </div>
+    </div><!-- /brand-bottom -->
+  </div><!-- /brand-panel -->
+
+
+  <!-- ════════════════════════════════════════════
+       PANEL DERECHO — AUTH
+  ════════════════════════════════════════════ -->
+  <div class="auth-panel">
+
+    <!-- ── SCREEN: LOGIN ─────────────────────── -->
+    <div class="screen active" id="screen-login">
+      <div class="auth-card">
+        <div class="screen-eyebrow">Bienvenido</div>
+        <div class="screen-title">Inicia sesión</div>
+        <p class="screen-sub">Accede con las credenciales que SmartHome envió a tu correo.</p>
+
+        <div class="alert alert-warn" id="login-error">
+          Correo o contraseña incorrectos. Verifica e intenta de nuevo.
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="login-email">Correo electrónico</label>
+          <div class="field-wrap">
+            <input
+              class="field-input"
+              id="login-email"
+              type="email"
+              placeholder="tucorreo@constructora.com"
+              autocomplete="email"
+            />
+          </div>
+          <div class="field-error" id="email-err">Ingresa un correo válido</div>
+        </div>
+
+        <div class="field">
+          <div class="flex-between">
+            <label class="field-label" for="login-pwd">Contraseña</label>
+            <span class="link" onclick="goTo('screen-recovery')">¿Olvidaste tu contraseña?</span>
+          </div>
+          <div class="field-wrap">
+            <input
+              class="field-input has-icon"
+              id="login-pwd"
+              type="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            />
+            <span class="field-icon" onclick="togglePwd('login-pwd', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+          <div class="field-error" id="pwd-err">La contraseña es requerida</div>
+        </div>
+
+        <button class="btn-primary" onclick="handleLogin()">
+          <span class="btn-text">Iniciar sesión</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+
+        <div class="divider">o</div>
+
+        <button class="btn-ghost" onclick="goTo('screen-admin')">
+          <span style="display:flex;align-items:center;justify-content:center;gap:8px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            Acceso administrador SmartHome
+          </span>
+        </button>
+      </div>
+
+      <p class="text-center mt-16" style="font-size:13px;color:var(--text-3)">
+        ¿No tienes acceso? Contacta a tu<br>líder comercial SmartHome.
+      </p>
+    </div><!-- /screen-login -->
+
+
+    <!-- ── SCREEN: PRIMER LOGIN (RF004) ─────── -->
+    <div class="screen" id="screen-firstlogin">
+      <div class="auth-card">
+        <div class="alert alert-warn show">
+          <strong style="display:block;margin-bottom:3px">Primer acceso detectado</strong>
+          Por seguridad debes crear una contraseña personal antes de continuar.
+        </div>
+
+        <div class="screen-eyebrow">RF004 — Primer inicio de sesión</div>
+        <div class="screen-title">Crea tu contraseña</div>
+        <p class="screen-sub">Tu contraseña temporal ya no será válida después de este paso.</p>
+
+        <div class="field">
+          <label class="field-label" for="new-pwd">Nueva contraseña</label>
+          <div class="field-wrap">
+            <input
+              class="field-input has-icon"
+              id="new-pwd"
+              type="password"
+              placeholder="Mínimo 8 caracteres"
+              oninput="checkPwdStrength(this.value)"
+            />
+            <span class="field-icon" onclick="togglePwd('new-pwd', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+          <div class="pwd-strength show" id="pwd-strength">
+            <div class="pwd-bars">
+              <div class="pwd-bar" id="bar0"></div>
+              <div class="pwd-bar" id="bar1"></div>
+              <div class="pwd-bar" id="bar2"></div>
+              <div class="pwd-bar" id="bar3"></div>
+            </div>
+            <div class="pwd-label" id="pwd-label-txt">Ingresa una contraseña</div>
+          </div>
+          <div class="pwd-rules">
+            <div class="pwd-rule" id="rule-len"><div class="rule-dot"></div>Mínimo 8 caracteres</div>
+            <div class="pwd-rule" id="rule-upper"><div class="rule-dot"></div>Al menos una mayúscula</div>
+            <div class="pwd-rule" id="rule-num"><div class="rule-dot"></div>Al menos un número</div>
+            <div class="pwd-rule" id="rule-special"><div class="rule-dot"></div>Al menos un símbolo (!@#$...)</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="confirm-pwd">Confirmar contraseña</label>
+          <div class="field-wrap">
+            <input
+              class="field-input has-icon"
+              id="confirm-pwd"
+              type="password"
+              placeholder="Repite la contraseña"
+            />
+            <span class="field-icon" onclick="togglePwd('confirm-pwd', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+          <div class="field-error" id="confirm-err">Las contraseñas no coinciden</div>
+        </div>
+
+        <button class="btn-primary" onclick="handleFirstLogin()">
+          <span class="btn-text">Activar mi cuenta</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+      </div>
+    </div><!-- /screen-firstlogin -->
+
+
+    <!-- ── SCREEN: RECOVERY PASO 1 — CORREO ── -->
+    <div class="screen" id="screen-recovery">
+      <div class="back-link" onclick="goTo('screen-login')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Volver al inicio de sesión
+      </div>
+      <div class="auth-card">
+        <div class="step-dots">
+          <div class="step-dot done"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+        </div>
+        <div class="screen-eyebrow">RF005 — Recuperación</div>
+        <div class="screen-title">¿Olvidaste tu contraseña?</div>
+        <p class="screen-sub">Ingresa tu correo y te enviaremos un enlace seguro de recuperación.</p>
+
+        <div class="field">
+          <label class="field-label" for="rec-email">Correo electrónico</label>
+          <input
+            class="field-input"
+            id="rec-email"
+            type="email"
+            placeholder="tucorreo@constructora.com"
+          />
+          <div class="field-error" id="rec-email-err">Ingresa un correo válido</div>
+        </div>
+
+        <p style="font-size:12px;color:var(--text-3);margin-bottom:16px;line-height:1.6">
+          El enlace expirará automáticamente en 30 minutos por seguridad.
+        </p>
+
+        <button class="btn-primary" onclick="handleRecovery1()">
+          <span class="btn-text">Enviar enlace de recuperación</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+      </div>
+    </div><!-- /screen-recovery -->
+
+
+    <!-- ── SCREEN: RECOVERY PASO 2 — CÓDIGO ── -->
+    <div class="screen" id="screen-recovery2">
+      <div class="back-link" onclick="goTo('screen-recovery')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Cambiar correo
+      </div>
+      <div class="auth-card">
+        <div class="step-dots">
+          <div class="step-dot done"></div>
+          <div class="step-dot done"></div>
+          <div class="step-dot"></div>
+        </div>
+        <div class="screen-eyebrow">RF005 — Verificación</div>
+        <div class="screen-title">Revisa tu correo</div>
+        <p class="screen-sub">
+          Ingresa el código de 6 dígitos que enviamos a
+          <strong id="rec-email-shown" style="color:var(--text-1)">tu correo</strong>.
+        </p>
+
+        <div class="field">
+          <label class="field-label" for="rec-code">Código de verificación</label>
+          <input
+            class="field-input"
+            id="rec-code"
+            type="text"
+            placeholder="000000"
+            maxlength="6"
+            style="letter-spacing:.3em;font-size:20px;text-align:center"
+            oninput="this.value = this.value.replace(/\D/g, '')"
+          />
+          <div class="field-error" id="code-err">Código incorrecto</div>
+        </div>
+
+        <div style="font-size:12px;color:var(--text-3);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+          <span>¿No llegó el correo?</span>
+          <span class="link" id="resend-link" onclick="handleResend()">Reenviar</span>
+        </div>
+
+        <button class="btn-primary" onclick="handleRecovery2()">
+          <span class="btn-text">Verificar código</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+      </div>
+    </div><!-- /screen-recovery2 -->
+
+
+    <!-- ── SCREEN: RECOVERY PASO 3 — NUEVA PWD -->
+    <div class="screen" id="screen-recovery3">
+      <div class="auth-card">
+        <div class="step-dots">
+          <div class="step-dot done"></div>
+          <div class="step-dot done"></div>
+          <div class="step-dot done"></div>
+        </div>
+        <div class="screen-eyebrow">RF005 — Nueva contraseña</div>
+        <div class="screen-title">Crea tu nueva contraseña</div>
+        <p class="screen-sub">Elige una contraseña segura. El enlace anterior quedará invalidado.</p>
+
+        <div class="field">
+          <label class="field-label" for="rec-new-pwd">Nueva contraseña</label>
+          <div class="field-wrap">
+            <input
+              class="field-input has-icon"
+              id="rec-new-pwd"
+              type="password"
+              placeholder="Mínimo 8 caracteres"
+            />
+            <span class="field-icon" onclick="togglePwd('rec-new-pwd', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="rec-confirm-pwd">Confirmar contraseña</label>
+          <div class="field-wrap">
+            <input
+              class="field-input has-icon"
+              id="rec-confirm-pwd"
+              type="password"
+              placeholder="Repite la contraseña"
+            />
+            <span class="field-icon" onclick="togglePwd('rec-confirm-pwd', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+          </div>
+          <div class="field-error" id="rec-confirm-err">Las contraseñas no coinciden</div>
+        </div>
+
+        <button class="btn-primary" onclick="handleRecovery3()">
+          <span class="btn-text">Guardar nueva contraseña</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+      </div>
+    </div><!-- /screen-recovery3 -->
+
+
+    <!-- ── SCREEN: SUCCESS ───────────────────── -->
+    <div class="screen" id="screen-success">
+      <div class="auth-card" style="text-align:center">
+        <div class="success-ring">
+          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="screen-title" id="success-title">¡Contraseña actualizada!</div>
+        <p
+          class="screen-sub"
+          id="success-sub"
+          style="max-width:280px;margin:0 auto 28px"
+        >
+          Tu contraseña fue guardada. Ya puedes ingresar a tu aula con tus nuevas credenciales.
+        </p>
+        <button class="btn-primary" onclick="goTo('screen-login')">
+          <span class="btn-text">Ir al inicio de sesión</span>
+          <div class="btn-loader"><div class="spinner"></div></div>
+        </button>
+      </div>
+    </div><!-- /screen-success -->
+
+
+    <!-- ── SCREEN: ADMIN — CREAR USUARIOS (RF002) -->
+    <div class="screen" id="screen-admin">
+      <div class="back-link" onclick="goTo('screen-login')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Volver
+      </div>
+      <div class="auth-card">
+        <div class="screen-eyebrow">RF002 — Administración</div>
+        <div class="screen-title">Crear usuarios</div>
+        <p class="screen-sub">Solo SmartHome puede crear cuentas. No hay registro público.</p>
+
+        <div class="admin-tabs">
+          <div class="admin-tab active" onclick="switchAdminTab('individual', this)">Individual</div>
+          <div class="admin-tab" onclick="switchAdminTab('masivo', this)">Carga masiva</div>
+        </div>
+
+        <!-- Creación individual -->
+        <div id="admin-individual">
+          <div class="alert alert-info show" style="margin-bottom:18px">
+            Al crear el usuario se enviará automáticamente el correo con credenciales (RF003).
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label" for="admin-name">Nombre completo *</label>
+              <input class="field-input" id="admin-name" type="text" placeholder="Juan Pérez" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="admin-email">Correo electrónico *</label>
+              <input class="field-input" id="admin-email" type="email" placeholder="juan@constructora.com" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label" for="admin-company">Empresa *</label>
+              <input class="field-input" id="admin-company" type="text" placeholder="Constructora Bolívar" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="admin-area">Área *</label>
+              <select class="field-select" id="admin-area">
+                <option value="">Seleccionar área</option>
+                <option>Comercial</option>
+                <option>Marketing</option>
+                <option>Cartera</option>
+                <option>Trámites</option>
+                <option>Postventas</option>
+                <option>Gerencial</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="alert alert-success" id="admin-success" style="margin-top:4px">
+            <span id="admin-success-msg"></span>
+          </div>
+
+          <button class="btn-primary" onclick="handleCreateUser()">
+            <span class="btn-text">Crear usuario y enviar credenciales</span>
+            <div class="btn-loader"><div class="spinner"></div></div>
+          </button>
+        </div><!-- /admin-individual -->
+
+        <!-- Carga masiva -->
+        <div id="admin-masivo" style="display:none">
+          <div class="alert alert-info show" style="margin-bottom:18px">
+            El archivo Excel debe contener las columnas: Nombre, Correo, Empresa, Área.
+          </div>
+
+          <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
+            <div class="upload-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <div class="upload-text" id="upload-text">Arrastra tu archivo Excel aquí</div>
+            <div class="upload-sub"  id="upload-sub">o haz clic para seleccionar · .xlsx, .csv</div>
+          </div>
+
+          <div class="alert alert-success" id="upload-success" style="margin-top:14px"></div>
+
+          <button
+            class="btn-primary"
+            id="btn-upload"
+            style="margin-top:14px"
+            onclick="handleMassUpload()"
+            disabled
+          >
+            <span class="btn-text">Procesar y enviar credenciales</span>
+            <div class="btn-loader"><div class="spinner"></div></div>
+          </button>
+        </div><!-- /admin-masivo -->
+
+      </div>
+    </div><!-- /screen-admin -->
+
+  </div><!-- /auth-panel -->
+</div><!-- /shell -->
+
+<!-- ════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+  /* ── NAVIGATION ─────────────────────────────── */
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+
+  /* ── PILL ROTATOR ───────────────────────────── */
+  let activeIdx = 0;
+  setInterval(() => {
+    const pills = document.querySelectorAll('.area-pills .pill');
+    pills[activeIdx].classList.remove('active-area');
+    activeIdx = (activeIdx + 1) % pills.length;
+    pills[activeIdx].classList.add('active-area');
+  }, 1800);
+
+  /* ── TOGGLE PASSWORD VISIBILITY ─────────────── */
+  function togglePwd(inputId, iconEl) {
+    const inp  = document.getElementById(inputId);
+    const show = inp.type === 'password';
+    inp.type   = show ? 'text' : 'password';
+    iconEl.innerHTML = show
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+           <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+           <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+           <line x1="1" y1="1" x2="23" y2="23"/>
+         </svg>`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+           <circle cx="12" cy="12" r="3"/>
+         </svg>`;
+  }
+
+  /* ── LOGIN (RF001) ──────────────────────────── */
+  function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pwd   = document.getElementById('login-pwd').value;
+    let ok = true;
+
+    document.getElementById('email-err').classList.remove('show');
+    document.getElementById('pwd-err').classList.remove('show');
+    document.getElementById('login-error').classList.remove('show');
+    document.getElementById('login-email').classList.remove('error');
+    document.getElementById('login-pwd').classList.remove('error');
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      document.getElementById('email-err').classList.add('show');
+      document.getElementById('login-email').classList.add('error');
+      ok = false;
+    }
+    if (!pwd) {
+      document.getElementById('pwd-err').classList.add('show');
+      document.getElementById('login-pwd').classList.add('error');
+      ok = false;
+    }
+    if (!ok) return;
+
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+
+    setTimeout(() => {
+      setLoading(btn, false);
+      /*
+       * Credenciales de demo:
+       *   demo@smart.com  /  Demo1234!  → primer login (RF004)
+       *   admin@smarthome.com  /  cualquier pwd  → panel admin (RF002)
+       *   cualquier otra combinación  → error
+       */
+      if (email === 'demo@smart.com' && pwd === 'Demo1234!') {
+        goTo('screen-firstlogin');
+      } else if (email === 'admin@smarthome.com') {
+        goTo('screen-admin');
+      } else {
+        document.getElementById('login-error').classList.add('show');
+      }
+    }, 1400);
+  }
+
+  /* Hint de credenciales demo al hacer foco */
+  document.getElementById('login-email').addEventListener('focus', () => {
+    if (!document.getElementById('login-email').value) {
+      document.getElementById('login-email').placeholder = 'Prueba: demo@smart.com';
+      document.getElementById('login-pwd').placeholder   = 'Prueba: Demo1234!';
+    }
+  });
+
+  /* ── PASSWORD STRENGTH METER ─────────────────── */
+  function checkPwdStrength(val) {
+    const rules = {
+      len:     val.length >= 8,
+      upper:   /[A-Z]/.test(val),
+      num:     /[0-9]/.test(val),
+      special: /[!@#$%^&*]/.test(val),
+    };
+    const ruleIds = ['rule-len', 'rule-upper', 'rule-num', 'rule-special'];
+    const ruleKeys = ['len', 'upper', 'num', 'special'];
+
+    ruleKeys.forEach((k, i) => {
+      document.getElementById(ruleIds[i]).classList.toggle('met', rules[k]);
+    });
+
+    const score  = Object.values(rules).filter(Boolean).length;
+    const colors = ['#EF4444', '#F59E0B', '#3B82F6', '#10B981'];
+    const labels = ['Muy débil', 'Moderada', 'Buena', 'Fuerte'];
+
+    for (let i = 0; i < 4; i++) {
+      document.getElementById('bar' + i).style.background =
+        i < score ? colors[score - 1] : 'var(--border)';
+    }
+    document.getElementById('pwd-label-txt').textContent = val ? labels[score - 1] : 'Ingresa una contraseña';
+    document.getElementById('pwd-label-txt').style.color = val ? colors[score - 1] : 'var(--text-3)';
+  }
+
+  /* ── PRIMER LOGIN / ACTIVACIÓN (RF004) ───────── */
+  function handleFirstLogin() {
+    const np = document.getElementById('new-pwd').value;
+    const cp = document.getElementById('confirm-pwd').value;
+
+    document.getElementById('confirm-err').classList.remove('show');
+    document.getElementById('confirm-pwd').classList.remove('error');
+
+    if (np !== cp) {
+      document.getElementById('confirm-err').classList.add('show');
+      document.getElementById('confirm-pwd').classList.add('error');
+      return;
+    }
+    if (np.length < 8) return;
+
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    setTimeout(() => {
+      setLoading(btn, false);
+      document.getElementById('success-title').textContent = '¡Cuenta activada!';
+      document.getElementById('success-sub').textContent   =
+        'Tu contraseña fue creada exitosamente. Ya puedes ingresar a tu Aula Virtual.';
+      goTo('screen-success');
+    }, 1500);
+  }
+
+  /* ── RECOVERY PASO 1 — SOLICITAR ENLACE (RF005) */
+  function handleRecovery1() {
+    const email = document.getElementById('rec-email').value.trim();
+    document.getElementById('rec-email-err').classList.remove('show');
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      document.getElementById('rec-email-err').classList.add('show');
+      return;
+    }
+    document.getElementById('rec-email-shown').textContent = email;
+
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    setTimeout(() => { setLoading(btn, false); goTo('screen-recovery2'); }, 1200);
+  }
+
+  /* ── RECOVERY PASO 2 — VERIFICAR CÓDIGO ──────── */
+  function handleRecovery2() {
+    const code = document.getElementById('rec-code').value;
+    document.getElementById('code-err').classList.remove('show');
+
+    if (code.length !== 6) {
+      document.getElementById('code-err').classList.add('show');
+      return;
+    }
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    setTimeout(() => { setLoading(btn, false); goTo('screen-recovery3'); }, 1000);
+  }
+
+  /* ── RECOVERY PASO 3 — NUEVA CONTRASEÑA ─────── */
+  function handleRecovery3() {
+    const np = document.getElementById('rec-new-pwd').value;
+    const cp = document.getElementById('rec-confirm-pwd').value;
+    document.getElementById('rec-confirm-err').classList.remove('show');
+
+    if (np !== cp) {
+      document.getElementById('rec-confirm-err').classList.add('show');
+      return;
+    }
+    if (np.length < 8) return;
+
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    setTimeout(() => {
+      setLoading(btn, false);
+      document.getElementById('success-title').textContent = '¡Contraseña actualizada!';
+      document.getElementById('success-sub').textContent   =
+        'Tu contraseña fue guardada. Ya puedes ingresar a tu aula con tus nuevas credenciales.';
+      goTo('screen-success');
+    }, 1400);
+  }
+
+  /* Reenvío de código con cooldown de 30 s */
+  let resendCooldown = false;
+  function handleResend() {
+    if (resendCooldown) return;
+    resendCooldown = true;
+    const link = document.getElementById('resend-link');
+    let t = 30;
+    link.style.color = 'var(--text-3)';
+    const iv = setInterval(() => {
+      link.textContent = 'Reenviar (' + t + 's)';
+      t--;
+      if (t < 0) {
+        clearInterval(iv);
+        link.textContent = 'Reenviar';
+        link.style.color = '';
+        resendCooldown = false;
+      }
+    }, 1000);
+  }
+
+  /* ── ADMIN TABS ─────────────────────────────── */
+  function switchAdminTab(tab, el) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('admin-individual').style.display = tab === 'individual' ? 'block' : 'none';
+    document.getElementById('admin-masivo').style.display     = tab === 'masivo'     ? 'block' : 'none';
+  }
+
+  /* ── CREAR USUARIO INDIVIDUAL (RF002 + RF003) ── */
+  function handleCreateUser() {
+    const name    = document.getElementById('admin-name').value.trim();
+    const email   = document.getElementById('admin-email').value.trim();
+    const company = document.getElementById('admin-company').value.trim();
+    const area    = document.getElementById('admin-area').value;
+
+    if (!name || !email || !company || !area) return;
+
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    document.getElementById('admin-success').classList.remove('show');
+
+    setTimeout(() => {
+      setLoading(btn, false);
+      document.getElementById('admin-success').classList.add('show');
+      document.getElementById('admin-success-msg').innerHTML =
+        `✓ Usuario <strong>${name}</strong> creado. Correo con credenciales enviado a
+         <strong>${email}</strong>. Ruta asignada: <strong>${area}</strong>.`;
+      document.getElementById('admin-name').value    = '';
+      document.getElementById('admin-email').value   = '';
+      document.getElementById('admin-company').value = '';
+      document.getElementById('admin-area').value    = '';
+    }, 1600);
+  }
+
+  /* ── CARGA MASIVA (RF002) ───────────────────── */
+  let fileSelected = false;
+
+  function simulateUpload() {
+    if (fileSelected) return;
+    fileSelected = true;
+    document.getElementById('upload-text').textContent    = 'usuarios_constructora_bolivar.xlsx';
+    document.getElementById('upload-sub').textContent     = '38 registros detectados · listo para procesar';
+    document.getElementById('upload-zone').style.borderColor = 'var(--teal)';
+    document.getElementById('upload-zone').style.background  = 'rgba(14,165,160,.06)';
+    document.getElementById('btn-upload').disabled        = false;
+  }
+
+  function handleMassUpload() {
+    const btn = event.currentTarget;
+    setLoading(btn, true);
+    setTimeout(() => {
+      setLoading(btn, false);
+      const s = document.getElementById('upload-success');
+      s.classList.add('show');
+      s.textContent = '✓ 38 usuarios creados. Correos con credenciales enviados. 2 duplicados omitidos.';
+      fileSelected  = false;
+      btn.disabled  = true;
+      document.getElementById('upload-text').textContent    = 'Arrastra tu archivo Excel aquí';
+      document.getElementById('upload-sub').textContent     = 'o haz clic para seleccionar · .xlsx, .csv';
+      document.getElementById('upload-zone').style.borderColor = '';
+      document.getElementById('upload-zone').style.background  = '';
+    }, 2200);
+  }
+
+  /* ── UTILITY: LOADING STATE ─────────────────── */
+  function setLoading(btn, on) {
+    btn.classList.toggle('loading', on);
+    btn.disabled = on;
+  }
+</script>
+</body>
+</html>
