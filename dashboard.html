@@ -4,8 +4,266 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartHome Academia — Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+/* ─── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --sh-blue:        #4A7CC7;
+  --sh-blue-dark:   #2E5A9C;
+  --sh-blue-light:  #6E9DD4;
+  --sh-green:       #5BAA3F;
+  --sh-green-dark:  #3D7A2A;
+  --sh-green-light: #7DC45A;
+  --navy:           #070D18;
+  --navy2:          #0C1520;
+  --navy3:          #12202E;
+  --navy4:          #1A2E42;
+  --text-1:         #EEF2FA;
+  --text-2:         #8FA3C0;
+  --text-3:         #4A6080;
+  --border:         #1B2C40;
+  --border2:        #213348;
+  --amber:          #C9A84C;
+  --amber-light:    #F0CC7A;
+  --teal-accent:    #2DD4CF;
+  --r:              10px;
+  --r-sm:           7px;
+}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--navy2);
+  color: var(--text-1);
+  font-size: 14px;
+  line-height: 1.5;
+}
+button, input, select { font-family: inherit; }
+
+/* ─── LAYOUT ─────────────────────────────────────────────── */
+.db-root { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.db-body { display: flex; flex: 1; overflow: hidden; }
+.db-main { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ─── NAV ────────────────────────────────────────────────── */
+.db-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  background: var(--navy);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo img { height: 34px; width: auto; }
+.nav-wordmark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300; font-size: 14px;
+  letter-spacing: .10em; text-transform: uppercase;
+  color: var(--text-1);
+}
+.nav-wordmark span { color: var(--sh-green-light); }
+.nav-wordmark small { font-size: 11px; color: var(--text-2); letter-spacing: .05em; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-bell { position: relative; cursor: pointer; color: var(--text-2); font-size: 18px; }
+.nav-bell-dot {
+  position: absolute; top: -2px; right: -2px;
+  width: 8px; height: 8px;
+  background: var(--sh-green); border-radius: 50%;
+  border: 2px solid var(--navy);
+}
+.nav-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy4); border: 2px solid var(--sh-blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; color: var(--sh-blue-light);
+  cursor: pointer;
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────── */
+.db-sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--navy);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  display: flex; flex-direction: column; gap: 4px;
+  overflow-y: auto;
+}
+.sb-section-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-3); padding: 12px 20px 6px;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px; cursor: pointer;
+  font-size: 13px; color: var(--text-2);
+  border-left: 3px solid transparent;
+  transition: all .15s;
+  text-decoration: none;
+}
+.sb-item:hover { background: var(--navy3); color: var(--text-1); }
+.sb-item.active {
+  background: var(--navy3); color: var(--sh-blue-light);
+  border-left-color: var(--sh-blue);
+}
+.sb-item i { font-size: 16px; }
+
+/* ─── WELCOME ────────────────────────────────────────────── */
+.welcome-header { display: flex; align-items: center; justify-content: space-between; }
+.welcome-text h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300; font-size: 26px; color: var(--text-1);
+}
+.welcome-text h1 em { font-style: italic; color: var(--sh-blue-light); }
+.welcome-text p { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+.welcome-date { font-size: 12px; color: var(--text-3); }
+
+/* ─── KPI GRID ───────────────────────────────────────────── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.kpi-card {
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative; overflow: hidden;
+}
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.kpi-card.blue::before  { background: var(--sh-blue); }
+.kpi-card.green::before { background: var(--sh-green); }
+.kpi-card.amber::before { background: var(--amber); }
+.kpi-card.teal::before  { background: var(--teal-accent); }
+.kpi-label { font-size: 11px; color: var(--text-3); letter-spacing: .04em; text-transform: uppercase; }
+.kpi-value { font-family: 'Fraunces', Georgia, serif; font-size: 32px; font-weight: 300; color: var(--text-1); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--text-2); }
+.kpi-icon { position: absolute; right: 14px; top: 14px; font-size: 22px; opacity: .25; }
+
+/* ─── PROGRESS BAR ───────────────────────────────────────── */
+.progress-wrap { background: var(--navy4); border-radius: 4px; height: 6px; overflow: hidden; margin-top: 6px; }
+.progress-bar { height: 100%; border-radius: 4px; }
+.progress-bar.blue  { background: var(--sh-blue); }
+.progress-bar.green { background: var(--sh-green); }
+.progress-bar.amber { background: var(--amber); }
+.progress-bar.teal  { background: var(--teal-accent); }
+
+/* ─── QUICK ACTIONS ──────────────────────────────────────── */
+.qa-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.qa-card {
+  background: var(--navy3); border: 1px solid var(--border2);
+  border-radius: var(--r); padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: border-color .2s, background .2s;
+  text-decoration: none; color: inherit;
+}
+.qa-card:hover { background: var(--navy4); border-color: var(--sh-blue); }
+.qa-icon-wrap {
+  width: 42px; height: 42px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.qa-icon-wrap.blue  { background: rgba(74,124,199,.15); color: var(--sh-blue-light); }
+.qa-icon-wrap.green { background: rgba(91,170,63,.15);  color: var(--sh-green-light); }
+.qa-icon-wrap.amber { background: rgba(201,168,76,.15); color: var(--amber-light); }
+.qa-text h3 { font-size: 13px; font-weight: 500; color: var(--text-1); }
+.qa-text p  { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.qa-arrow   { color: var(--text-3); font-size: 14px; margin-left: auto; }
+
+/* ─── TWO-COLUMN ─────────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+
+/* ─── SECTION CARD ───────────────────────────────────────── */
+.section-card {
+  background: var(--navy3); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px;
+}
+.section-card h2 {
+  font-size: 14px; font-weight: 500; color: var(--text-1);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.section-card h2 i { font-size: 16px; color: var(--sh-blue-light); }
+
+/* ─── ROUTE TABS ─────────────────────────────────────────── */
+.route-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.route-tab {
+  font-size: 11px; padding: 5px 12px; border-radius: 20px; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--navy4); color: var(--text-2);
+  transition: all .15s;
+}
+.route-tab.active { background: var(--sh-blue); color: #fff; border-color: var(--sh-blue); }
+.route-tab:hover:not(.active) { color: var(--text-1); border-color: var(--border); }
+
+/* ─── LESSON LIST ────────────────────────────────────────── */
+.lesson-list { display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto; }
+.lesson-list::-webkit-scrollbar { width: 4px; }
+.lesson-list::-webkit-scrollbar-track { background: var(--navy4); }
+.lesson-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.lesson-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: var(--r-sm);
+  background: var(--navy4); border: 1px solid transparent;
+  cursor: pointer; transition: border-color .15s;
+}
+.lesson-item:hover { border-color: var(--border2); }
+.lesson-item.completed    { opacity: .7; }
+.lesson-item.active-lesson { border-color: var(--sh-blue); background: rgba(74,124,199,.08); }
+.lesson-num      { font-size: 10px; color: var(--text-3); width: 18px; text-align: center; flex-shrink: 0; }
+.lesson-status   { font-size: 15px; flex-shrink: 0; }
+.lesson-status.done { color: var(--sh-green); }
+.lesson-status.prog { color: var(--sh-blue-light); }
+.lesson-status.lock { color: var(--text-3); }
+.lesson-info     { flex: 1; min-width: 0; }
+.lesson-title    { font-size: 12px; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lesson-meta     { font-size: 11px; color: var(--text-3); }
+.lesson-duration { font-size: 11px; color: var(--text-3); flex-shrink: 0; }
+
+/* ─── ACTIVITY ───────────────────────────────────────────── */
+.activity-list { display: flex; flex-direction: column; gap: 12px; }
+.activity-item { display: flex; align-items: center; gap: 12px; }
+.activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.activity-dot.green { background: var(--sh-green); }
+.activity-dot.blue  { background: var(--sh-blue); }
+.activity-dot.amber { background: var(--amber); }
+.activity-line { flex: 1; }
+.activity-line p    { font-size: 12px; color: var(--text-2); }
+.activity-line span { font-size: 11px; color: var(--text-3); }
+.activity-badge {
+  font-size: 10px; padding: 3px 8px; border-radius: 20px;
+  background: rgba(74,124,199,.15); color: var(--sh-blue-light);
+  white-space: nowrap;
+}
+
+/* ─── CERT MINI ──────────────────────────────────────────── */
+.cert-mini {
+  background: var(--navy4); border: 1px solid var(--border2);
+  border-radius: var(--r-sm); padding: 14px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.cert-icon { font-size: 28px; color: var(--amber-light); }
+.cert-name { font-size: 13px; color: var(--text-1); font-weight: 500; }
+.cert-date { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.cert-dl {
+  font-size: 11px; color: var(--sh-blue-light);
+  cursor: pointer; display: flex; align-items: center; gap: 4px;
+  text-decoration: none;
+}
+.cert-dl:hover { color: var(--sh-blue); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col  { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .db-sidebar  { display: none; }
+  .kpi-grid    { grid-template-columns: repeat(2, 1fr); }
+  .qa-grid     { grid-template-columns: 1fr; }
+  .db-main     { padding: 16px; }
+}
+  </style>
 </head>
 <body>
 
@@ -18,60 +276,36 @@
       <div class="nav-wordmark">Smart<span>Home</span> <small>Academia</small></div>
     </div>
     <div class="nav-right">
-      <div class="nav-bell" title="Notificaciones" aria-label="Notificaciones">
-        <i class="ti ti-bell" aria-hidden="true"></i>
+      <div class="nav-bell" title="Notificaciones">
+        <i class="ti ti-bell"></i>
         <div class="nav-bell-dot"></div>
       </div>
-      <div class="nav-avatar" title="Mi perfil" id="navAvatar">CA</div>
+      <div class="nav-avatar" id="navAvatar">CA</div>
     </div>
   </nav>
 
   <div class="db-body">
 
     <!-- ══ SIDEBAR ══ -->
-    <aside class="db-sidebar" role="navigation" aria-label="Menú principal">
+    <aside class="db-sidebar">
       <div class="sb-section-label">Principal</div>
-      <a href="#" class="sb-item active" aria-current="page">
-        <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard
-      </a>
-      <a href="aula-certificada.html" class="sb-item">
-        <i class="ti ti-school" aria-hidden="true"></i> Mi capacitación
-      </a>
-      <a href="#certificados" class="sb-item">
-        <i class="ti ti-certificate" aria-hidden="true"></i> Certificados
-      </a>
-      <a href="#diy" class="sb-item">
-        <i class="ti ti-tools" aria-hidden="true"></i> DIY — Tutoriales
-      </a>
-
+      <a href="#" class="sb-item active"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+      <a href="aula-certificada.html" class="sb-item"><i class="ti ti-school"></i> Mi capacitación</a>
+      <a href="#certificados" class="sb-item"><i class="ti ti-certificate"></i> Certificados</a>
+      <a href="#diy" class="sb-item"><i class="ti ti-tools"></i> DIY — Tutoriales</a>
       <div class="sb-section-label">Rutas</div>
-      <a href="#" class="sb-item" data-route="comercial">
-        <i class="ti ti-briefcase" aria-hidden="true"></i> Comercial
-      </a>
-      <a href="#" class="sb-item" data-route="marketing">
-        <i class="ti ti-speakerphone" aria-hidden="true"></i> Marketing
-      </a>
-      <a href="#" class="sb-item" data-route="cartera">
-        <i class="ti ti-credit-card" aria-hidden="true"></i> Cartera
-      </a>
-      <a href="#" class="sb-item" data-route="tramites">
-        <i class="ti ti-file-invoice" aria-hidden="true"></i> Trámites
-      </a>
-      <a href="#" class="sb-item" data-route="postventas">
-        <i class="ti ti-tool" aria-hidden="true"></i> Postventas
-      </a>
-      <a href="#" class="sb-item" data-route="gerencial">
-        <i class="ti ti-chart-line" aria-hidden="true"></i> Gerencial
-      </a>
-      <a href="#" class="sb-item" data-route="configuraciones">
-        <i class="ti ti-settings" aria-hidden="true"></i> Configuraciones
-      </a>
+      <a href="#" class="sb-item" onclick="jumpToTab('comercial');return false;"><i class="ti ti-briefcase"></i> Comercial</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('marketing');return false;"><i class="ti ti-speakerphone"></i> Marketing</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('cartera');return false;"><i class="ti ti-credit-card"></i> Cartera</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('tramites');return false;"><i class="ti ti-file-invoice"></i> Trámites</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('postventas');return false;"><i class="ti ti-tool"></i> Postventas</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('gerencial');return false;"><i class="ti ti-chart-line"></i> Gerencial</a>
+      <a href="#" class="sb-item" onclick="jumpToTab('configuraciones');return false;"><i class="ti ti-settings"></i> Configuraciones</a>
     </aside>
 
     <!-- ══ MAIN ══ -->
     <main class="db-main" id="dbMain">
 
-      <!-- BIENVENIDA (RF009) -->
       <div class="welcome-header">
         <div class="welcome-text">
           <h1>Bienvenida, <em id="userName">Carolina</em></h1>
@@ -80,76 +314,63 @@
         <div class="welcome-date" id="dateLabel"></div>
       </div>
 
-      <!-- KPIs DE AVANCE -->
-      <section aria-label="Resumen de avance">
+      <section>
         <div class="kpi-grid">
           <div class="kpi-card blue">
-            <i class="ti ti-book-2 kpi-icon" aria-hidden="true"></i>
+            <i class="ti ti-book-2 kpi-icon"></i>
             <div class="kpi-label">Cursos asignados</div>
-            <div class="kpi-value" id="kpiAsignados">12</div>
+            <div class="kpi-value">12</div>
             <div class="kpi-sub">Ruta Comercial completa</div>
-            <div class="progress-wrap"><div class="progress-bar blue" style="width:100%;"></div></div>
+            <div class="progress-wrap"><div class="progress-bar blue" style="width:100%"></div></div>
           </div>
           <div class="kpi-card green">
-            <i class="ti ti-check kpi-icon" aria-hidden="true"></i>
+            <i class="ti ti-check kpi-icon"></i>
             <div class="kpi-label">Cursos completados</div>
-            <div class="kpi-value" id="kpiCompletados">7</div>
-            <div class="kpi-sub" id="kpiPendSub">5 pendientes</div>
-            <div class="progress-wrap"><div class="progress-bar green" id="pbComp" style="width:58%;"></div></div>
+            <div class="kpi-value">7</div>
+            <div class="kpi-sub">5 pendientes</div>
+            <div class="progress-wrap"><div class="progress-bar green" style="width:58%"></div></div>
           </div>
           <div class="kpi-card amber">
-            <i class="ti ti-chart-pie kpi-icon" aria-hidden="true"></i>
+            <i class="ti ti-chart-pie kpi-icon"></i>
             <div class="kpi-label">Avance general</div>
-            <div class="kpi-value" id="kpiAvance">58%</div>
+            <div class="kpi-value">58%</div>
             <div class="kpi-sub">+12% este mes</div>
-            <div class="progress-wrap"><div class="progress-bar amber" id="pbAvance" style="width:58%;"></div></div>
+            <div class="progress-wrap"><div class="progress-bar amber" style="width:58%"></div></div>
           </div>
           <div class="kpi-card teal">
-            <i class="ti ti-award kpi-icon" aria-hidden="true"></i>
+            <i class="ti ti-award kpi-icon"></i>
             <div class="kpi-label">Certificados obtenidos</div>
-            <div class="kpi-value" id="kpiCerts">2</div>
+            <div class="kpi-value">2</div>
             <div class="kpi-sub">1 próximo a obtener</div>
-            <div class="progress-wrap"><div class="progress-bar teal" style="width:17%;"></div></div>
+            <div class="progress-wrap"><div class="progress-bar teal" style="width:17%"></div></div>
           </div>
         </div>
       </section>
 
-      <!-- ACCESOS RÁPIDOS -->
-      <section aria-label="Accesos rápidos">
+      <section>
         <div class="qa-grid">
           <a href="aula-certificada.html" class="qa-card">
-            <div class="qa-icon-wrap blue"><i class="ti ti-player-play" aria-hidden="true"></i></div>
-            <div class="qa-text">
-              <h3>Continuar capacitación</h3>
-              <p>Ruta secuencial · Lección 8 de 12</p>
-            </div>
-            <i class="ti ti-arrow-right qa-arrow" aria-hidden="true"></i>
+            <div class="qa-icon-wrap blue"><i class="ti ti-player-play"></i></div>
+            <div class="qa-text"><h3>Continuar capacitación</h3><p>Ruta secuencial · Lección 8 de 12</p></div>
+            <i class="ti ti-arrow-right qa-arrow"></i>
           </a>
           <a href="#diy" class="qa-card">
-            <div class="qa-icon-wrap green"><i class="ti ti-search" aria-hidden="true"></i></div>
-            <div class="qa-text">
-              <h3>Buscar tutorial</h3>
-              <p>DIY · Más de 80 videos disponibles</p>
-            </div>
-            <i class="ti ti-arrow-right qa-arrow" aria-hidden="true"></i>
+            <div class="qa-icon-wrap green"><i class="ti ti-search"></i></div>
+            <div class="qa-text"><h3>Buscar tutorial</h3><p>DIY · Más de 80 videos disponibles</p></div>
+            <i class="ti ti-arrow-right qa-arrow"></i>
           </a>
           <a href="#certificados" class="qa-card">
-            <div class="qa-icon-wrap amber"><i class="ti ti-download" aria-hidden="true"></i></div>
-            <div class="qa-text">
-              <h3>Descargar certificados</h3>
-              <p>2 disponibles en PDF</p>
-            </div>
-            <i class="ti ti-arrow-right qa-arrow" aria-hidden="true"></i>
+            <div class="qa-icon-wrap amber"><i class="ti ti-download"></i></div>
+            <div class="qa-text"><h3>Descargar certificados</h3><p>2 disponibles en PDF</p></div>
+            <i class="ti ti-arrow-right qa-arrow"></i>
           </a>
         </div>
       </section>
 
-      <!-- MALLA + ACTIVIDAD -->
       <div class="two-col">
 
-        <!-- MALLA CURRICULAR (RF014) -->
         <div class="section-card">
-          <h2><i class="ti ti-list" aria-hidden="true"></i> Malla curricular</h2>
+          <h2><i class="ti ti-list"></i> Malla curricular</h2>
           <div class="route-tabs" id="routeTabs">
             <button class="route-tab active" onclick="switchTab(this,'comercial')">Comercial</button>
             <button class="route-tab" onclick="switchTab(this,'cartera')">Cartera</button>
@@ -157,19 +378,18 @@
             <button class="route-tab" onclick="switchTab(this,'tramites')">Trámites</button>
             <button class="route-tab" onclick="switchTab(this,'postventas')">Postventas</button>
           </div>
-          <div class="lesson-list" id="lessonList" role="list"></div>
+          <div class="lesson-list" id="lessonList"></div>
         </div>
 
-        <!-- DERECHA: actividad + certs -->
         <div style="display:flex;flex-direction:column;gap:16px;">
 
           <div class="section-card">
-            <h2><i class="ti ti-activity" aria-hidden="true"></i> Actividad reciente</h2>
+            <h2><i class="ti ti-activity"></i> Actividad reciente</h2>
             <div class="activity-list" id="activityList"></div>
           </div>
 
           <div class="section-card" id="certificados">
-            <h2><i class="ti ti-award" aria-hidden="true"></i> Mis certificados</h2>
+            <h2><i class="ti ti-award"></i> Mis certificados</h2>
             <div id="certList"></div>
             <p style="font-size:12px;color:var(--text-3);margin-top:4px;">
               1 certificado próximo: completa 2 lecciones más de la Ruta Comercial.
@@ -185,14 +405,7 @@
 
 <script>
 /* ══ DATOS ══════════════════════════════════════════════════ */
-const USER = {
-  name: "Carolina",
-  initials: "CA",
-  area: "Comercial",
-  company: "Constructora Bolívar S.A.",
-};
-
-const ROUTES = {
+var ROUTES = {
   comercial: [
     { title:"Crear y gestionar clientes",    dur:"18 min", status:"done" },
     { title:"Segmentación de clientes",       dur:"22 min", status:"done" },
@@ -205,7 +418,7 @@ const ROUTES = {
     { title:"Reportes comerciales",           dur:"18 min", status:"lock" },
     { title:"Mapa de calor de ventas",        dur:"16 min", status:"lock" },
     { title:"Pipeline de negociación",        dur:"21 min", status:"lock" },
-    { title:"Indicadores de desempeño",       dur:"17 min", status:"lock" },
+    { title:"Indicadores de desempeño",       dur:"17 min", status:"lock" }
   ],
   cartera: [
     { title:"Planes de pago configurables",   dur:"20 min", status:"done" },
@@ -221,7 +434,7 @@ const ROUTES = {
     { title:"Refinanciación de créditos",     dur:"20 min", status:"lock" },
     { title:"Historial de pagos",             dur:"15 min", status:"lock" },
     { title:"Notas crédito y débito",         dur:"18 min", status:"lock" },
-    { title:"Reportes de cartera",            dur:"21 min", status:"lock" },
+    { title:"Reportes de cartera",            dur:"21 min", status:"lock" }
   ],
   marketing: [
     { title:"Conexión digital SmartHome",     dur:"16 min", status:"done" },
@@ -231,14 +444,14 @@ const ROUTES = {
     { title:"Integración Brevo",              dur:"19 min", status:"lock" },
     { title:"Marketing Hub",                  dur:"24 min", status:"lock" },
     { title:"Segmentación de campañas",       dur:"18 min", status:"lock" },
-    { title:"Reportes de marketing",          dur:"17 min", status:"lock" },
+    { title:"Reportes de marketing",          dur:"17 min", status:"lock" }
   ],
   tramites: [
     { title:"Solicitud de trámites",          dur:"14 min", status:"done" },
     { title:"Documentación requerida",        dur:"18 min", status:"prog" },
     { title:"Seguimiento de solicitudes",     dur:"12 min", status:"lock" },
     { title:"Integración notarial",           dur:"20 min", status:"lock" },
-    { title:"Reportes de trámites",           dur:"15 min", status:"lock" },
+    { title:"Reportes de trámites",           dur:"15 min", status:"lock" }
   ],
   postventas: [
     { title:"Gestión de PQR",                 dur:"16 min", status:"done" },
@@ -247,23 +460,40 @@ const ROUTES = {
     { title:"Citas de revisión",              dur:"13 min", status:"lock" },
     { title:"Seguimiento de garantías",       dur:"18 min", status:"lock" },
     { title:"Evaluación de satisfacción",     dur:"12 min", status:"lock" },
-    { title:"Reportes de postventas",         dur:"17 min", status:"lock" },
+    { title:"Reportes de postventas",         dur:"17 min", status:"lock" }
   ],
+  gerencial: [
+    { title:"Dashboard ejecutivo CRM",        dur:"20 min", status:"lock" },
+    { title:"Indicadores de ventas",          dur:"18 min", status:"lock" },
+    { title:"Reportes de cartera gerencial",  dur:"16 min", status:"lock" },
+    { title:"KPIs de marketing",              dur:"14 min", status:"lock" }
+  ],
+  configuraciones: [
+    { title:"Roles y permisos",               dur:"15 min", status:"done" },
+    { title:"Notificaciones y alertas",       dur:"12 min", status:"done" },
+    { title:"Campos personalizados",          dur:"18 min", status:"prog" },
+    { title:"Importar clientes",              dur:"14 min", status:"lock" },
+    { title:"Ciclos de venta",                dur:"16 min", status:"lock" },
+    { title:"Tipos de pago",                  dur:"10 min", status:"lock" },
+    { title:"Logos y marca",                  dur:"8 min",  status:"lock" }
+  ]
 };
 
-const ACTIVITY = [
-  { dot:"green", text:"Completaste <strong>Cotización de proyectos</strong>", time:"Hace 2 horas",  badge:"✓ Aprobado",        badgeStyle:"background:rgba(91,170,63,.12);color:var(--sh-green-light);" },
-  { dot:"blue",  text:"Iniciaste <strong>Semáforo de ventas</strong>",        time:"Hoy, 9:14 AM",  badge:"En curso",           badgeStyle:"background:rgba(74,124,199,.15);color:var(--sh-blue-light);" },
-  { dot:"amber", text:"Evaluación <strong>Segmentación de clientes</strong>", time:"Ayer, 3:40 PM", badge:"92 / 100",           badgeStyle:"background:rgba(201,168,76,.12);color:#F0CC7A;" },
-  { dot:"green", text:"Certificado <strong>Módulo Básico CRM</strong>",       time:"Hace 3 días",   badge:"🏅 Certificado",     badgeStyle:"background:rgba(91,170,63,.12);color:var(--sh-green-light);" },
+var ACTIVITY = [
+  { dot:"green", text:"Completaste <strong>Cotización de proyectos</strong>",    time:"Hace 2 horas",  badge:"✓ Aprobado",    bs:"background:rgba(91,170,63,.12);color:var(--sh-green-light);" },
+  { dot:"blue",  text:"Iniciaste <strong>Semáforo de ventas</strong>",            time:"Hoy, 9:14 AM",  badge:"En curso",      bs:"background:rgba(74,124,199,.15);color:var(--sh-blue-light);" },
+  { dot:"amber", text:"Evaluación <strong>Segmentación de clientes</strong>",     time:"Ayer, 3:40 PM", badge:"92 / 100",      bs:"background:rgba(201,168,76,.12);color:#F0CC7A;" },
+  { dot:"green", text:"Certificado <strong>Módulo Básico CRM</strong>",           time:"Hace 3 días",   badge:"🏅 Certificado", bs:"background:rgba(91,170,63,.12);color:var(--sh-green-light);" }
 ];
 
-const CERTS = [
-  { name:"Módulo Básico CRM",             date:"5 jun 2026" },
-  { name:"Creación y Gestión de Clientes", date:"28 may 2026" },
+var CERTS = [
+  { name:"Módulo Básico CRM",              date:"5 jun 2026" },
+  { name:"Creación y Gestión de Clientes", date:"28 may 2026" }
 ];
 
 /* ══ RENDER ═════════════════════════════════════════════════ */
+
+/* Tabs — onclick inline en cada botón */
 function switchTab(btn, route) {
   var tabs = document.querySelectorAll('#routeTabs .route-tab');
   for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
@@ -271,74 +501,79 @@ function switchTab(btn, route) {
   renderLessons(route);
 }
 
+/* Llamado desde los enlaces del sidebar */
+function jumpToTab(route) {
+  var tabs = document.querySelectorAll('#routeTabs .route-tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove('active');
+    if (tabs[i].getAttribute('onclick').indexOf("'" + route + "'") !== -1) {
+      tabs[i].classList.add('active');
+    }
+  }
+  renderLessons(route);
+  document.getElementById('dbMain').scrollTo({ top: 9999, behavior: 'smooth' });
+}
+
 function renderLessons(route) {
-  const list = document.getElementById('lessonList');
-  list.innerHTML = '';
-  (ROUTES[route] || []).forEach((l, i) => {
-    const iconMap = { done:'ti-circle-check', prog:'ti-player-play', lock:'ti-lock' };
-    const div = document.createElement('div');
-    div.className = 'lesson-item' +
-      (l.status === 'prog' ? ' active-lesson' : '') +
-      (l.status === 'done' ? ' completed' : '');
-    div.setAttribute('role','listitem');
-    div.innerHTML = `
-      <span class="lesson-num">${i+1}</span>
-      <i class="ti ${iconMap[l.status]} lesson-status ${l.status}" aria-hidden="true"></i>
-      <div class="lesson-info">
-        <div class="lesson-title">${l.title}</div>
-        <div class="lesson-meta">${l.status==='done'?'Completado':l.status==='prog'?'En curso':'Bloqueado'}</div>
-      </div>
-      <span class="lesson-duration">${l.dur}</span>`;
-    list.appendChild(div);
-  });
+  var list = document.getElementById('lessonList');
+  var lessons = ROUTES[route] || [];
+  var iconMap = { done:'ti-circle-check', prog:'ti-player-play', lock:'ti-lock' };
+  var html = '';
+  for (var i = 0; i < lessons.length; i++) {
+    var l = lessons[i];
+    var cls = 'lesson-item' + (l.status === 'prog' ? ' active-lesson' : '') + (l.status === 'done' ? ' completed' : '');
+    html += '<div class="' + cls + '">'
+      + '<span class="lesson-num">' + (i+1) + '</span>'
+      + '<i class="ti ' + iconMap[l.status] + ' lesson-status ' + l.status + '"></i>'
+      + '<div class="lesson-info">'
+      + '<div class="lesson-title">' + l.title + '</div>'
+      + '<div class="lesson-meta">' + (l.status==='done'?'Completado':l.status==='prog'?'En curso':'Bloqueado') + '</div>'
+      + '</div>'
+      + '<span class="lesson-duration">' + l.dur + '</span>'
+      + '</div>';
+  }
+  list.innerHTML = html;
 }
 
 function renderActivity() {
-  const el = document.getElementById('activityList');
-  el.innerHTML = ACTIVITY.map(a => `
-    <div class="activity-item">
-      <div class="activity-dot ${a.dot}"></div>
-      <div class="activity-line">
-        <p>${a.text}</p><span>${a.time}</span>
-      </div>
-      <div class="activity-badge" style="${a.badgeStyle}">${a.badge}</div>
-    </div>`).join('');
+  var el = document.getElementById('activityList');
+  var html = '';
+  for (var i = 0; i < ACTIVITY.length; i++) {
+    var a = ACTIVITY[i];
+    html += '<div class="activity-item">'
+      + '<div class="activity-dot ' + a.dot + '"></div>'
+      + '<div class="activity-line"><p>' + a.text + '</p><span>' + a.time + '</span></div>'
+      + '<div class="activity-badge" style="' + a.bs + '">' + a.badge + '</div>'
+      + '</div>';
+  }
+  el.innerHTML = html;
 }
 
 function renderCerts() {
-  const el = document.getElementById('certList');
-  el.innerHTML = CERTS.map(c => `
-    <div class="cert-mini">
-      <i class="ti ti-certificate cert-icon" aria-hidden="true"></i>
-      <div style="flex:1;">
-        <div class="cert-name">${c.name}</div>
-        <div class="cert-date">Obtenido el ${c.date}</div>
-      </div>
-      <a href="#" class="cert-dl" download aria-label="Descargar ${c.name}">
-        <i class="ti ti-download" aria-hidden="true"></i> PDF
-      </a>
-    </div>`).join('');
+  var el = document.getElementById('certList');
+  var html = '';
+  for (var i = 0; i < CERTS.length; i++) {
+    var c = CERTS[i];
+    html += '<div class="cert-mini">'
+      + '<i class="ti ti-certificate cert-icon"></i>'
+      + '<div style="flex:1"><div class="cert-name">' + c.name + '</div><div class="cert-date">Obtenido el ' + c.date + '</div></div>'
+      + '<a href="#" class="cert-dl"><i class="ti ti-download"></i> PDF</a>'
+      + '</div>';
+  }
+  el.innerHTML = html;
 }
 
-/* ══ INIT ════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  // Inject user
-  document.getElementById('userName').textContent    = USER.name;
-  document.getElementById('navAvatar').textContent   = USER.initials;
-  document.getElementById('userArea').textContent    = USER.area;
-  document.getElementById('userCompany').textContent = USER.company;
+/* ══ INIT — directo, sin DOMContentLoaded ═══════════════════ */
+document.getElementById('userName').textContent    = 'Carolina';
+document.getElementById('navAvatar').textContent   = 'CA';
+document.getElementById('userArea').textContent    = 'Comercial';
+document.getElementById('userCompany').textContent = 'Constructora Bolívar S.A.';
+document.getElementById('dateLabel').textContent   =
+  new Date().toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-  // Date
-  document.getElementById('dateLabel').textContent =
-    new Date().toLocaleDateString('es-CO', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-
-  // Render lists
-  renderLessons('comercial');
-  renderActivity();
-  renderCerts();
-
-
-});
+renderLessons('comercial');
+renderActivity();
+renderCerts();
 </script>
 
 </body>
