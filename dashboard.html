@@ -150,12 +150,12 @@
         <!-- MALLA CURRICULAR (RF014) -->
         <div class="section-card">
           <h2><i class="ti ti-list" aria-hidden="true"></i> Malla curricular</h2>
-          <div class="route-tabs" id="routeTabs" role="tablist">
-            <button class="route-tab active" data-route="comercial" role="tab" aria-selected="true">Comercial</button>
-            <button class="route-tab" data-route="cartera" role="tab" aria-selected="false">Cartera</button>
-            <button class="route-tab" data-route="marketing" role="tab" aria-selected="false">Marketing</button>
-            <button class="route-tab" data-route="tramites" role="tab" aria-selected="false">Trámites</button>
-            <button class="route-tab" data-route="postventas" role="tab" aria-selected="false">Postventas</button>
+          <div class="route-tabs" id="routeTabs">
+            <button class="route-tab active" onclick="switchTab(this,'comercial')">Comercial</button>
+            <button class="route-tab" onclick="switchTab(this,'cartera')">Cartera</button>
+            <button class="route-tab" onclick="switchTab(this,'marketing')">Marketing</button>
+            <button class="route-tab" onclick="switchTab(this,'tramites')">Trámites</button>
+            <button class="route-tab" onclick="switchTab(this,'postventas')">Postventas</button>
           </div>
           <div class="lesson-list" id="lessonList" role="list"></div>
         </div>
@@ -264,6 +264,13 @@ const CERTS = [
 ];
 
 /* ══ RENDER ═════════════════════════════════════════════════ */
+function switchTab(btn, route) {
+  var tabs = document.querySelectorAll('#routeTabs .route-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  btn.classList.add('active');
+  renderLessons(route);
+}
+
 function renderLessons(route) {
   const list = document.getElementById('lessonList');
   list.innerHTML = '';
@@ -330,34 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderActivity();
   renderCerts();
 
-  // Route tabs — listener directo en cada botón, sin delegación que interfiera
-  document.querySelectorAll('#routeTabs .route-tab').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('#routeTabs .route-tab').forEach(function(t) {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      this.classList.add('active');
-      this.setAttribute('aria-selected', 'true');
-      renderLessons(this.getAttribute('data-route'));
-    });
-  });
 
-  // Sidebar links — solo los <a> con data-route, excluyendo los botones de tab
-  document.querySelectorAll('a.sb-item[data-route]').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      var route = this.getAttribute('data-route');
-      if (!ROUTES[route]) return;
-      var tabBtn = document.querySelector('#routeTabs .route-tab[data-route="' + route + '"]');
-      if (tabBtn) {
-        tabBtn.click();
-      } else {
-        renderLessons(route);
-      }
-      document.getElementById('dbMain').scrollTo({top: 9999, behavior:'smooth'});
-    });
-  });
 });
 </script>
 
